@@ -12,7 +12,6 @@ import {
 import Image from "./Image"
 
 const DEFAULT_IMAGE = 674
-const SHOW_LOADING = false
 const HEIGHT = "100%"
 const WIDTH = "100%"
 const DURATION = 3000
@@ -56,7 +55,7 @@ const Demo = () => {
   }
 
   return (
-    <Container style={{ width: "90vw", height: "70vw" }}>
+    <Container style={{ width: "90vw", height: "70vh" }}>
       <Toolbar style={{ gap: "8px" }}>
         <TextField
           size="small"
