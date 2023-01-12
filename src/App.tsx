@@ -55,7 +55,7 @@ const Demo = () => {
   }
 
   return (
-    <Container style={{ width: "90vw", height: "70vh" }}>
+    <Container style={{ width: "90vw", height: "90vh" }}>
       <Toolbar style={{ gap: "8px" }}>
         <TextField
           size="small"
