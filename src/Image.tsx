@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { makeStyles } from "@material-ui/core"
+import { makeStyles, Theme } from "@material-ui/core"
 
 type ImageProperties = {
   src: string
@@ -20,7 +20,7 @@ type StyleProperties = {
   loaded: boolean
 }
 
-const useStyles = makeStyles<{}, StyleProperties>({
+const useStyles = makeStyles<Theme, StyleProperties>({
   root: {
     height: ({ height }) => height,
     width: ({ width }) => width,
