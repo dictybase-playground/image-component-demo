@@ -1,5 +1,7 @@
 import { useState } from "react"
-import { makeStyles, Theme } from "@material-ui/core"
+import { makeStyles, SvgIcon, Theme } from "@material-ui/core"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import BrokenImageTwoToneIcon from "@material-ui/icons/BrokenImageTwoTone"
 
 type ImageProperties = {
   src: string
@@ -17,7 +19,7 @@ type StyleProperties = {
   fit: string
   duration: number
   easing: string
-  loaded: boolean
+  loading: boolean
 }
 
 const useStyles = makeStyles<Theme, StyleProperties>({
@@ -37,15 +39,25 @@ const useStyles = makeStyles<Theme, StyleProperties>({
     animationDuration: ({ duration }) => `${duration}ms`,
     animationTimingFunction: ({ easing }) => easing,
   },
+  icons: {
+    width: "100%",
+    marginLeft: "-100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   "@keyframes materialize": {
     "0%": {
       filter: "saturate(20%) contrast(50%) brightness(160%)",
+      opacity: 0,
     },
     "75%": {
       filter: "saturate(60%) contrast(100%) brightness(100%)",
+      opacity: 1,
     },
     "100%": {
       filter: "saturate(100%) contrast(100%) brightness(100%)",
+      opacity: 1,
     },
   },
 })
@@ -59,15 +71,21 @@ const Image = ({
   easing = "cubic-bezier(0.7, 0, 0.6, 1)",
   duration = 3000,
 }: ImageProperties) => {
-  const [loaded, setLoaded] = useState(false)
-  const { root, image } = useStyles({
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const { root, image, icons } = useStyles({
     height,
     width,
     fit,
     easing,
     duration,
-    loaded,
+    loading,
   })
+
+  const handleError = () => {
+    setLoading(false)
+    setError(true)
+  }
 
   return (
     <div className={root}>
@@ -75,8 +93,17 @@ const Image = ({
         src={src}
         alt={alt}
         className={image}
-        onLoad={() => setLoaded(true)}
+        onLoad={() => setLoading(false)}
+        onError={handleError}
       />
+      <div className={icons}>
+        {loading ? <CircularProgress size={56} thickness={6} /> : null}
+        {error ? (
+          <SvgIcon fontSize="large" color="error">
+            <BrokenImageTwoToneIcon />
+          </SvgIcon>
+        ) : null}
+      </div>
     </div>
   )
 }
