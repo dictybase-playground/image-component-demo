@@ -7,14 +7,12 @@ import {
   Select,
   InputLabel,
   MenuItem,
-  useMediaQuery,
   Toolbar,
 } from "@material-ui/core"
 import Image from "./Image"
 
 const DEFAULT_IMAGE = 674
 const SHOW_LOADING = false
-const ERROR_ICON = true
 const HEIGHT = "100%"
 const WIDTH = "100%"
 const DURATION = 3000
@@ -24,7 +22,6 @@ const FIT = "cover"
 const Demo = () => {
   const [currentPhoto, setCurrentPhoto] = useState(DEFAULT_IMAGE)
   const [showPhoto, setShowPhoto] = useState(true)
-  const [showLoading, setShowLoading] = useState(SHOW_LOADING)
   const [height, setHeight] = useState(HEIGHT)
   const [width, setWidth] = useState(WIDTH)
   const [duration, setDuration] = useState(DURATION)
@@ -51,7 +48,6 @@ const Demo = () => {
   }
 
   const resetDefaults = () => {
-    setShowLoading(SHOW_LOADING)
     setHeight(HEIGHT)
     setWidth(WIDTH)
     setDuration(DURATION)
