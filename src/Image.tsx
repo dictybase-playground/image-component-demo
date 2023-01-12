@@ -22,8 +22,8 @@ type StyleProperties = {
 
 const useStyles = makeStyles<{}, StyleProperties>({
   root: {
-    height: (styleProperties) => styleProperties.height,
-    width: (styleProperties) => styleProperties.width,
+    height: ({ height }) => height,
+    width: ({ width }) => width,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -32,12 +32,21 @@ const useStyles = makeStyles<{}, StyleProperties>({
   image: {
     width: "100%",
     height: "100%",
-    "object-fit": (styleProperties) => styleProperties.fit,
-    transitionProperty: "opacity",
-    transitionTimingFunction: (styleProperties) => styleProperties.easing,
-    transitionDuration: (styleProperties) =>
-      styleProperties.duration ? `${styleProperties.duration}ms` : "",
-    opacity: (styleProperties) => (styleProperties.loaded ? 1 : 0),
+    "object-fit": ({ fit }) => fit,
+    animationName: `$materialize`,
+    animationDuration: ({ duration }) => `${duration}ms`,
+    animationTimingFunction: ({ easing }) => easing,
+  },
+  "@keyframes materialize": {
+    "0%": {
+      filter: "saturate(20%) contrast(50%) brightness(160%)",
+    },
+    "75%": {
+      filter: "saturate(60%) contrast(100%) brightness(100%)",
+    },
+    "100%": {
+      filter: "saturate(100%) contrast(100%) brightness(100%)",
+    },
   },
 })
 
