@@ -16,7 +16,7 @@ const HEIGHT = "100%"
 const WIDTH = "100%"
 const DURATION = 3000
 const EASING = "cubic-bezier(0.7, 0, 0.6, 1)"
-const FIT = "cover"
+const FIT = "contain"
 
 const Demo = () => {
   const [currentPhoto, setCurrentPhoto] = useState(DEFAULT_IMAGE)

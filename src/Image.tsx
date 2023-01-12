@@ -55,7 +55,7 @@ const Image = ({
   alt,
   height = "100%",
   width = "100%",
-  fit = "cover",
+  fit = "contain",
   easing = "cubic-bezier(0.7, 0, 0.6, 1)",
   duration = 3000,
 }: ImageProperties) => {
