@@ -1,7 +1,8 @@
-import { useState } from "react"
-import { makeStyles, SvgIcon, Theme } from "@material-ui/core"
+import { useRef, useState } from "react"
+import { Container, makeStyles, SvgIcon, Theme } from "@material-ui/core"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import BrokenImageTwoToneIcon from "@material-ui/icons/BrokenImageTwoTone"
+import ImageResizer from "./ImageResizer"
 
 type ImageProperties = {
   src: string
@@ -69,7 +70,7 @@ const Image = ({
   width = "100%",
   fit = "contain",
   easing = "cubic-bezier(0.7, 0, 0.6, 1)",
-  duration = 3000,
+  duration = 2000,
 }: ImageProperties) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -81,6 +82,7 @@ const Image = ({
     duration,
     loading,
   })
+  const imageReference = useRef(null)
 
   const handleError = () => {
     setLoading(false)
@@ -88,23 +90,25 @@ const Image = ({
   }
 
   return (
-    <div className={root}>
+    <Container disableGutters className={root}>
       <img
+        ref={imageReference}
         src={src}
         alt={alt}
         className={image}
         onLoad={() => setLoading(false)}
         onError={handleError}
       />
-      <div className={icons}>
+      <Container disableGutters className={icons}>
         {loading ? <CircularProgress size={56} thickness={6} /> : null}
         {error ? (
           <SvgIcon fontSize="large" color="error">
             <BrokenImageTwoToneIcon />
           </SvgIcon>
         ) : null}
-      </div>
-    </div>
+      </Container>
+      <ImageResizer imageReference={imageReference.current} />
+    </Container>
   )
 }
 
