@@ -20,6 +20,7 @@ type StyleProperties = {
   duration: number
   easing: string
   loading: boolean
+  error: boolean
 }
 
 const useStyles = makeStyles<Theme, StyleProperties>({
@@ -38,6 +39,7 @@ const useStyles = makeStyles<Theme, StyleProperties>({
     animationName: `$materialize`,
     animationDuration: ({ duration }) => `${duration}ms`,
     animationTimingFunction: ({ easing }) => easing,
+    zIndex: ({ error }) => (error ? -1 : 1),
   },
   icons: {
     width: "100%",
@@ -49,15 +51,15 @@ const useStyles = makeStyles<Theme, StyleProperties>({
   "@keyframes materialize": {
     "0%": {
       filter: "saturate(20%) contrast(50%) brightness(160%)",
-      opacity: 0,
+      opacity: "0",
     },
     "75%": {
       filter: "saturate(60%) contrast(100%) brightness(100%)",
-      opacity: 1,
+      opacity: "1",
     },
     "100%": {
       filter: "saturate(100%) contrast(100%) brightness(100%)",
-      opacity: 1,
+      opacity: "1",
     },
   },
 })
@@ -80,6 +82,7 @@ const Image = ({
     easing,
     duration,
     loading,
+    error,
   })
   const imageReference = useRef(null)
 
