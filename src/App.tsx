@@ -4,11 +4,12 @@ import {
   Container,
   Button,
   FormControl,
+  FormControlLabel,
   Select,
   InputLabel,
   MenuItem,
   Checkbox,
-  Toolbar,
+  Drawer,
 } from "@material-ui/core"
 import Image from "./Image"
 
@@ -20,6 +21,7 @@ const EASING = "cubic-bezier(0.7, 0, 0.6, 1)"
 const FIT = "contain"
 
 const Demo = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true)
   const [useLocal, setUseLocal] = useState(true)
   const [currentPhoto, setCurrentPhoto] = useState(DEFAULT_IMAGE)
   const [showPhoto, setShowPhoto] = useState(true)
@@ -69,16 +71,8 @@ const Demo = () => {
 
   return (
     <Container style={{ width: "90vw", height: "80vh" }}>
-      <Toolbar style={{ gap: "8px" }}>
-        <InputLabel htmlFor="use-local-select">Use local image</InputLabel>
-        <FormControl>
-          <Checkbox
-            id="use-local-select"
-            checked={useLocal}
-            size="small"
-            onChange={handleChange}
-          />
-        </FormControl>
+      <Button onClick={() => setIsDrawerOpen(true)}> Props </Button>
+      <Drawer onClose={() => setIsDrawerOpen(false)} open={isDrawerOpen}>
         <TextField
           size="small"
           label="height"
@@ -131,7 +125,22 @@ const Demo = () => {
         <Button onClick={getNewPhoto}> New </Button>
         <Button onClick={refreshPhoto}> Refresh </Button>
         <Button onClick={resetDefaults}> Reset </Button>
-      </Toolbar>
+        <FormControl>
+          <FormControlLabel
+            value="Local?"
+            label="Local?"
+            labelPlacement="top"
+            control={
+              <Checkbox
+                id="use-local-select"
+                checked={useLocal}
+                size="small"
+                onChange={handleChange}
+              />
+            }
+          />
+        </FormControl>
+      </Drawer>
       {showPhoto ? (
         <Image
           src={imageUrl}
