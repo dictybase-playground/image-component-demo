@@ -2,7 +2,6 @@ import { useRef, useState } from "react"
 import { Container, makeStyles, SvgIcon, Theme } from "@material-ui/core"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import BrokenImageTwoToneIcon from "@material-ui/icons/BrokenImageTwoTone"
-import ImageResizer from "./ImageResizer"
 
 type ImageProperties = {
   src: string
@@ -107,7 +106,6 @@ const Image = ({
           </SvgIcon>
         ) : null}
       </Container>
-      <ImageResizer imageReference={imageReference.current} />
     </Container>
   )
 }
