@@ -38,7 +38,7 @@ const Demo = () => {
   const getNewPhoto = () => {
     if (mobileOpen) setMobileOpen(false)
     const newPhoto = useLocal
-      ? currentPhoto + 1
+      ? (currentPhoto + 1) % 4
       : Math.floor(Math.random() * 1051)
     setShowPhoto(false)
     setCurrentPhoto(newPhoto)
@@ -72,16 +72,19 @@ const Demo = () => {
   return (
     <Container style={{ width: "90vw", height: "80vh" }}>
       <Button onClick={() => setIsDrawerOpen(true)}> Props </Button>
-      <Drawer onClose={() => setIsDrawerOpen(false)} open={isDrawerOpen}>
+      <Drawer
+        onClose={() => setIsDrawerOpen(false)}
+        open={isDrawerOpen}
+        ModalProps={{ hideBackdrop: true }}>
         <TextField
           size="small"
-          label="height"
+          label="height (string)"
           value={height}
           onChange={(event) => setHeight(event.target.value)}
         />
         <TextField
           size="small"
-          label="width"
+          label="width (string)"
           value={width}
           onChange={(event) => setWidth(event.target.value)}
         />
