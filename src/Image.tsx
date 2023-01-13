@@ -62,6 +62,20 @@ const useStyles = makeStyles<Theme, StyleProperties>({
   },
 })
 
+const LoadingDisplay = ({ icons }: { icons: string }) => (
+  <div className={icons}>
+    <CircularProgress size={56} thickness={6} />
+  </div>
+)
+
+const ErrorDisplay = ({ icons }: { icons: string }) => (
+  <div className={icons}>
+    <SvgIcon fontSize="large" color="error">
+      <BrokenImageTwoToneIcon />
+    </SvgIcon>
+  </div>
+)
+
 const Image = ({
   src,
   alt,
@@ -81,12 +95,6 @@ const Image = ({
     duration,
     loading,
   })
-
-  const handleError = () => {
-    setLoading(false)
-    setError(true)
-  }
-
   return (
     <div className={root}>
       <img
@@ -94,16 +102,13 @@ const Image = ({
         alt={alt}
         className={image}
         onLoad={() => setLoading(false)}
-        onError={handleError}
+        onError={() => {
+          setLoading(false)
+          setError(true)
+        }}
       />
-      <div className={icons}>
-        {loading ? <CircularProgress size={56} thickness={6} /> : null}
-        {error ? (
-          <SvgIcon fontSize="large" color="error">
-            <BrokenImageTwoToneIcon />
-          </SvgIcon>
-        ) : null}
-      </div>
+      {loading ? <LoadingDisplay icons={icons} /> : null}
+      {error ? <ErrorDisplay icons={icons} /> : null}
     </div>
   )
 }
