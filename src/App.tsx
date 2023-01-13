@@ -75,7 +75,7 @@ const Demo = () => {
       <Drawer
         onClose={() => setIsDrawerOpen(false)}
         open={isDrawerOpen}
-        ModalProps={{ hideBackdrop: true }}>
+        ModalProps={{ BackdropProps: { invisible: true } }}>
         <TextField
           size="small"
           label="height (string)"
