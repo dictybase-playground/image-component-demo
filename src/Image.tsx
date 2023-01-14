@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { makeStyles, SvgIcon, Theme } from "@material-ui/core"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import BrokenImageTwoToneIcon from "@material-ui/icons/BrokenImageTwoTone"
+import { makeStyles, Theme } from "@material-ui/core"
+import ErrorDisplay from "./ErrorDisplay"
+import LoadingDisplay from "./LoadingDisplay"
 
 type ImageProperties = {
   src: string
@@ -61,20 +61,6 @@ const useStyles = makeStyles<Theme, StyleProperties>({
     },
   },
 })
-
-const LoadingDisplay = ({ icons }: { icons: string }) => (
-  <div className={icons}>
-    <CircularProgress size={56} thickness={6} />
-  </div>
-)
-
-const ErrorDisplay = ({ icons }: { icons: string }) => (
-  <div className={icons}>
-    <SvgIcon fontSize="large" color="error">
-      <BrokenImageTwoToneIcon />
-    </SvgIcon>
-  </div>
-)
 
 const Image = ({
   src,
