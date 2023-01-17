@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Container } from "@material-ui/core"
 import ErrorDisplay from "./ErrorDisplay"
 import LoadingDisplay from "./LoadingDisplay"
 import imageStyles from "./ImageStyles"
@@ -33,7 +34,7 @@ const Image = ({
     loading,
   })
   return (
-    <div className={root}>
+    <Container disableGutters className={root}>
       <img
         src={src}
         alt={alt}
@@ -46,7 +47,7 @@ const Image = ({
       />
       {loading ? <LoadingDisplay icons={icons} /> : null}
       {error ? <ErrorDisplay icons={icons} /> : null}
-    </div>
+    </Container>
   )
 }
 

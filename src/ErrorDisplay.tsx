@@ -1,12 +1,12 @@
 import BrokenImageTwoToneIcon from "@material-ui/icons/BrokenImageTwoTone"
-import { SvgIcon } from "@material-ui/core"
+import { SvgIcon, Container } from "@material-ui/core"
 
 const ErrorDisplay = ({ icons }: { icons: string }) => (
-  <div className={icons}>
+  <Container disableGutters className={icons}>
     <SvgIcon fontSize="large" color="error">
       <BrokenImageTwoToneIcon />
     </SvgIcon>
-  </div>
+  </Container>
 )
 
 export default ErrorDisplay

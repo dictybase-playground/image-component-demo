@@ -1,9 +1,9 @@
-import CircularProgress from "@material-ui/core/CircularProgress"
+import { Container, CircularProgress } from "@material-ui/core"
 
 const LoadingDisplay = ({ icons }: { icons: string }) => (
-  <div className={icons}>
+  <Container disableGutters className={icons}>
     <CircularProgress size={56} thickness={6} />
-  </div>
+  </Container>
 )
 
 export default LoadingDisplay
