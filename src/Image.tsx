@@ -12,12 +12,12 @@ type ImageProperties = {
   fit: string
   duration: number
   easing: string
-  onResize: (dWidth: number, dHeight: number) => void
+  onResize: (width: string, height: string) => void
 }
 
 type StyleProperties = {
-  height: string
-  width: string
+  currentHeight: string
+  currentWidth: string
   fit: string
   duration: number
   easing: string
@@ -28,8 +28,8 @@ type StyleProperties = {
 const useStyles = makeStyles<Theme, StyleProperties>({
   root: {
     position: "relative",
-    height: ({ height }) => height,
-    width: ({ width }) => width,
+    height: ({ currentHeight }) => currentHeight,
+    width: ({ currentWidth }) => currentWidth,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -77,27 +77,35 @@ const Image = ({
   duration = 2000,
   onResize,
 }: ImageProperties) => {
+  const [currentWidth, setCurrentWidth] = useState(width)
+  const [currentHeight, setCurrentHeight] = useState(height)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const imageContainerReference = useRef<HTMLImageElement>(null)
   const { root, image, icons } = useStyles({
-    height,
-    width,
+    currentWidth,
+    currentHeight,
     fit,
     easing,
     duration,
     loading,
     error,
   })
-  const imageReference = useRef<HTMLImageElement>(null)
+
+  const handleResize = (newWidth: string, newHeight: string) => {
+    setCurrentWidth(newWidth)
+    setCurrentHeight(newHeight)
+    onResize(newWidth, newHeight)
+  }
+
   const handleError = () => {
     setLoading(false)
     setError(true)
   }
 
   return (
-    <Container disableGutters className={root}>
+    <Container ref={imageContainerReference} disableGutters className={root}>
       <img
-        ref={imageReference}
         src={src}
         alt={alt}
         className={image}
@@ -112,7 +120,10 @@ const Image = ({
           </SvgIcon>
         ) : null}
       </Container>
-      <ImageResizer onResize={onResize} />
+      <ImageResizer
+        handleResize={handleResize}
+        imageContainer={imageContainerReference.current}
+      />
     </Container>
   )
 }
