@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { Container, makeStyles, SvgIcon, Theme } from "@material-ui/core"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import BrokenImageTwoToneIcon from "@material-ui/icons/BrokenImageTwoTone"
+import ImageResizer from "./ImageResizer"
 
 type ImageProperties = {
   src: string
@@ -11,6 +12,7 @@ type ImageProperties = {
   fit: string
   duration: number
   easing: string
+  onResize: (dWidth: number, dHeight: number) => void
 }
 
 type StyleProperties = {
@@ -25,6 +27,7 @@ type StyleProperties = {
 
 const useStyles = makeStyles<Theme, StyleProperties>({
   root: {
+    position: "relative",
     height: ({ height }) => height,
     width: ({ width }) => width,
     display: "flex",
@@ -72,6 +75,7 @@ const Image = ({
   fit = "contain",
   easing = "cubic-bezier(0.7, 0, 0.6, 1)",
   duration = 2000,
+  onResize,
 }: ImageProperties) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -84,8 +88,7 @@ const Image = ({
     loading,
     error,
   })
-  const imageReference = useRef(null)
-
+  const imageReference = useRef<HTMLImageElement>(null)
   const handleError = () => {
     setLoading(false)
     setError(true)
@@ -109,6 +112,7 @@ const Image = ({
           </SvgIcon>
         ) : null}
       </Container>
+      <ImageResizer onResize={onResize} />
     </Container>
   )
 }
