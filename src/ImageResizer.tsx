@@ -1,12 +1,6 @@
 import React, { useRef } from "react"
 import { makeStyles } from "@material-ui/core"
 
-// enum DIRECTION {
-//   east = 1,
-//   north = 1 << 3,
-//   south = 1 << 1,
-//   west = 1 << 2,
-// }
 enum DIRECTION {
   north = 1,
   south = 1 << 1,
@@ -70,14 +64,14 @@ const useStyles = makeStyles({
 })
 
 type ImageResizerProperties = {
-  // verbum's image resizer accepts an editor prop, but couldn't we just do useLexicalComposerContext?
-  // actually maybe just have this component be editor agnostic for now? I
-  // think the only reason verbum's uses the editor is to limit the size of the
-  // image to the size of the editor. I'll ignore that for now
-  onResize: (dWidth: number, dHeight: number) => void
+  imageContainer: HTMLDivElement | null
+  handleResize: (width: string, height: string) => void
 }
 
-const ImageResizer = ({ onResize }: ImageResizerProperties) => {
+const ImageResizer = ({
+  handleResize,
+  imageContainer,
+}: ImageResizerProperties) => {
   const positionReference = useRef({
     initialY: 0,
     initialX: 0,
@@ -86,7 +80,9 @@ const ImageResizer = ({ onResize }: ImageResizerProperties) => {
   const { root, north, south, east, west, ne, nw, se, sw } = useStyles()
 
   const onMouseMove = (event: MouseEvent) => {
+    if (!imageContainer) return
     const position = positionReference.current
+    const imageDimensions = imageContainer.getBoundingClientRect()
     let dY = 0
     let dX = 0
 
@@ -97,15 +93,20 @@ const ImageResizer = ({ onResize }: ImageResizerProperties) => {
       const currentY = event.clientY
       dY = currentY - position.initialY
       dY = position.direction & DIRECTION.south ? dY : -dY
+      position.initialY = currentY
     }
 
     if (isHorizontal) {
       const currentX = event.clientX
       dX = currentX - position.initialX
       dX = position.direction & DIRECTION.east ? dX : -dX
+      position.initialX = currentX
     }
 
-    onResize(dX, dY)
+    const newHeight = imageDimensions.height + dY
+    const newWidth = imageDimensions.width + dX
+
+    handleResize(`${newWidth}px`, `${newHeight}px`)
   }
 
   const onMouseUp = () => {

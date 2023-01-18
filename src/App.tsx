@@ -11,14 +11,14 @@ import {
   Checkbox,
   Drawer,
 } from "@material-ui/core"
-import Image from "./Image"
+import ImageComponent from "./ImageComponent"
 
 const DEFAULT_IMAGE = 1
 const HEIGHT = "100%"
 const WIDTH = "100%"
 const DURATION = 2000
 const EASING = "cubic-bezier(0.7, 0, 0.6, 1)"
-const FIT = "contain"
+const FIT = "cover"
 
 const Demo = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true)
@@ -78,18 +78,6 @@ const Demo = () => {
         ModalProps={{ BackdropProps: { invisible: true } }}>
         <TextField
           size="small"
-          label="height (string)"
-          value={height}
-          onChange={(event) => setHeight(event.target.value)}
-        />
-        <TextField
-          size="small"
-          label="width (string)"
-          value={width}
-          onChange={(event) => setWidth(event.target.value)}
-        />
-        <TextField
-          size="small"
           label="duration (ms)"
           value={duration}
           onChange={(event) =>
@@ -145,10 +133,10 @@ const Demo = () => {
         </FormControl>
       </Drawer>
       {showPhoto ? (
-        <Image
+        <ImageComponent
           src={imageUrl}
-          width={width}
-          height={height}
+          initialWidth={width}
+          initialHeight={height}
           duration={duration}
           easing={easing}
           fit={fit}
