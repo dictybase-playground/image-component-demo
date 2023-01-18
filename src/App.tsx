@@ -10,6 +10,9 @@ import {
   Toolbar,
 } from "@material-ui/core"
 import Image from "./Image"
+import AvifImage from "./assets/unsplash.avif"
+import WebPImage from "./assets/unsplash.webp"
+import RegularImage from "./assets/unsplash.jpg"
 
 const DEFAULT_IMAGE = 674
 const HEIGHT = "100%"
@@ -112,7 +115,9 @@ const Demo = () => {
       </Toolbar>
       {showPhoto ? (
         <Image
-          src={`https://picsum.photos/id/${currentPhoto}/2000`}
+          src={RegularImage}
+          webpSrc={WebPImage}
+          avifSrc={AvifImage}
           width={width}
           height={height}
           duration={duration}

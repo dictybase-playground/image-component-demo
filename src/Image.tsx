@@ -5,6 +5,8 @@ import LoadingDisplay from "./LoadingDisplay"
 import imageStyles from "./ImageStyles"
 
 type ImageProperties = {
+  webpSrc: string
+  avifSrc: string
   src: string
   alt?: string
   height: string
@@ -16,6 +18,8 @@ type ImageProperties = {
 
 const Image = ({
   src,
+  webpSrc,
+  avifSrc,
   alt,
   height = "100%",
   width = "100%",
@@ -35,16 +39,26 @@ const Image = ({
   })
   return (
     <Container disableGutters className={root}>
-      <img
-        src={src}
-        alt={alt}
+      <picture
         className={image}
         onLoad={() => setLoading(false)}
         onError={() => {
           setLoading(false)
           setError(true)
-        }}
-      />
+        }}>
+        <source srcSet={avifSrc} type="image/avif" />
+        <source srcSet={webpSrc} type="image/webp" />
+        <img
+          src={src}
+          alt={alt}
+          className={image}
+          onLoad={() => setLoading(false)}
+          onError={() => {
+            setLoading(false)
+            setError(true)
+          }}
+        />
+      </picture>
       {loading ? <LoadingDisplay icons={icons} /> : null}
       {error ? <ErrorDisplay icons={icons} /> : null}
     </Container>
