@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import { makeStyles } from "@material-ui/core"
+import useResizerStyles from "./resizerStyles"
 
 enum DIRECTION {
   north = 1,
@@ -7,61 +7,6 @@ enum DIRECTION {
   east = 1 << 2,
   west = 1 << 3,
 }
-
-const useStyles = makeStyles({
-  root: {
-    height: "6px",
-    width: "6px",
-    position: "absolute",
-    backgroundColor: "rgb(60, 132, 244)",
-    border: "1px solid #fff",
-    zIndex: 3,
-  },
-  north: {
-    marginLeft: "auto",
-    marginRight: "auto",
-    top: "-4px",
-    cursor: "n-resize",
-  },
-  south: {
-    marginLeft: "auto",
-    marginRight: "auto",
-    bottom: "-4px",
-    cursor: "s-resize",
-  },
-  east: {
-    marginTop: "auto",
-    marginBottom: "auto",
-    right: "-4px",
-    cursor: "w-resize",
-  },
-  west: {
-    marginTop: "auto",
-    marginBottom: "auto",
-    left: "-4px",
-    cursor: "e-resize",
-  },
-  ne: {
-    top: "-4px",
-    right: "-4px",
-    cursor: "ne-resize",
-  },
-  nw: {
-    top: "-4px",
-    left: "-4px",
-    cursor: "nw-resize",
-  },
-  se: {
-    bottom: "-4px",
-    right: "-4px",
-    cursor: "se-resize",
-  },
-  sw: {
-    bottom: "-4px",
-    left: "-4px",
-    cursor: "sw-resize",
-  },
-})
 
 type ImageResizerProperties = {
   imageContainer: HTMLDivElement | null
@@ -77,12 +22,13 @@ const ImageResizer = ({
     initialX: 0,
     direction: 0,
   })
-  const { root, north, south, east, west, ne, nw, se, sw } = useStyles()
+  const { root, north, south, east, west, ne, nw, se, sw } = useResizerStyles()
 
   const onMouseMove = (event: MouseEvent) => {
     if (!imageContainer) return
     const position = positionReference.current
     const imageDimensions = imageContainer.getBoundingClientRect()
+    const { width: imageWidth, height: imageHeight } = imageDimensions
     let dY = 0
     let dX = 0
 
@@ -101,10 +47,12 @@ const ImageResizer = ({
       dX = currentX - position.initialX
       dX = position.direction & DIRECTION.east ? dX : -dX
       position.initialX = currentX
+
+      // dY = isVertical ? dX / aspectRatio : dY
     }
 
-    const newHeight = imageDimensions.height + dY
-    const newWidth = imageDimensions.width + dX
+    const newHeight = imageHeight + dY
+    const newWidth = imageWidth + dX
 
     handleResize(`${newWidth}px`, `${newHeight}px`)
   }
@@ -115,6 +63,7 @@ const ImageResizer = ({
     Object.keys(position).forEach((property) => {
       position[property as keyof typeof position] = 0
     })
+
     document.removeEventListener("mousemove", onMouseMove)
     document.removeEventListener("mouseup", onMouseUp)
   }

@@ -1,8 +1,9 @@
 import { useRef, useState } from "react"
-import { Container, makeStyles, SvgIcon, Theme } from "@material-ui/core"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import BrokenImageTwoToneIcon from "@material-ui/icons/BrokenImageTwoTone"
+import { Container } from "@material-ui/core"
+import LoadingDisplay from "./LoadingDisplay"
+import ErrorDisplay from "./ErrorDisplay"
 import ImageResizer from "./ImageResizer"
+import useImageStyles from "./imageStyles"
 
 type ImageProperties = {
   src: string
@@ -14,58 +15,6 @@ type ImageProperties = {
   easing: string
   onResize: (width: string, height: string) => void
 }
-
-type StyleProperties = {
-  currentHeight: string
-  currentWidth: string
-  fit: string
-  duration: number
-  easing: string
-  loading: boolean
-  error: boolean
-}
-
-const useStyles = makeStyles<Theme, StyleProperties>({
-  root: {
-    position: "relative",
-    height: ({ currentHeight }) => currentHeight,
-    width: ({ currentWidth }) => currentWidth,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "black",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    "object-fit": ({ fit }) => fit,
-    animationName: `$materialize`,
-    animationDuration: ({ duration }) => `${duration}ms`,
-    animationTimingFunction: ({ easing }) => easing,
-    zIndex: ({ error }) => (error ? -1 : 1),
-  },
-  icons: {
-    width: "100%",
-    marginLeft: "-100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  "@keyframes materialize": {
-    "0%": {
-      filter: "saturate(20%) contrast(50%) brightness(160%)",
-      opacity: "0",
-    },
-    "75%": {
-      filter: "saturate(60%) contrast(100%) brightness(100%)",
-      opacity: "1",
-    },
-    "100%": {
-      filter: "saturate(100%) contrast(100%) brightness(100%)",
-      opacity: "1",
-    },
-  },
-})
 
 const Image = ({
   src,
@@ -82,7 +31,7 @@ const Image = ({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const imageContainerReference = useRef<HTMLImageElement>(null)
-  const { root, image, icons } = useStyles({
+  const { root, image, icons } = useImageStyles({
     currentWidth,
     currentHeight,
     fit,
@@ -112,14 +61,8 @@ const Image = ({
         onLoad={() => setLoading(false)}
         onError={handleError}
       />
-      <Container disableGutters className={icons}>
-        {loading ? <CircularProgress size={56} thickness={6} /> : null}
-        {error ? (
-          <SvgIcon fontSize="large" color="error">
-            <BrokenImageTwoToneIcon />
-          </SvgIcon>
-        ) : null}
-      </Container>
+      {loading ? <LoadingDisplay icons={icons} /> : null}
+      {error ? <ErrorDisplay icons={icons} /> : null}
       <ImageResizer
         handleResize={handleResize}
         imageContainer={imageContainerReference.current}
