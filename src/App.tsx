@@ -22,7 +22,7 @@ const EASING = "cubic-bezier(0.7, 0, 0.6, 1)"
 const FIT = "contain"
 
 const Demo = () => {
-  const [currentPhoto, setCurrentPhoto] = useState(DEFAULT_IMAGE)
+  const [, setCurrentPhoto] = useState(DEFAULT_IMAGE)
   const [showPhoto, setShowPhoto] = useState(true)
   const [height, setHeight] = useState(HEIGHT)
   const [width, setWidth] = useState(WIDTH)
