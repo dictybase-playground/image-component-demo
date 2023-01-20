@@ -18,9 +18,10 @@ const useImageStyles = makeStyles<Theme, StyleProperties>({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "inherit",
   },
   image: {
+    clipPath: "ellipse(farthest-side farthest-side at 50%)",
     aspectRatio: "1",
     width: "100%",
     height: "100%",
