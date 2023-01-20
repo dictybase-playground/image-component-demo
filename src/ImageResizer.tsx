@@ -2,10 +2,10 @@ import React, { useRef } from "react"
 import useResizerStyles from "./resizerStyles"
 
 enum DIRECTION {
-  north = 1,
-  south = 1 << 1,
-  east = 1 << 2,
-  west = 1 << 3,
+  NORTH,
+  SOUTH,
+  EAST,
+  WEST,
 }
 
 type ImageResizerProperties = {
@@ -17,111 +17,108 @@ const ImageResizer = ({
   handleResize,
   imageContainer,
 }: ImageResizerProperties) => {
-  const positionReference = useRef({
-    initialY: 0,
+  const moveHandlerReference = useRef<{
+    handler: null | ((event: MouseEvent) => void)
+  }>({ handler: null })
+  const initialValuesReference = useRef({
     initialX: 0,
-    direction: 0,
+    initialY: 0,
+    initialWidth: 0,
+    initialHeight: 0,
   })
-  const { root, north, south, east, west, ne, nw, se, sw } = useResizerStyles()
+  const { root, north, south, east, west } = useResizerStyles()
 
-  const onMouseMove = (event: MouseEvent) => {
-    if (!imageContainer) return
-    const position = positionReference.current
-    const imageDimensions = imageContainer.getBoundingClientRect()
-    const { width: imageWidth, height: imageHeight } = imageDimensions
-    let dY = 0
-    let dX = 0
+  const handleNorthMove = (event: MouseEvent) => {
+    const { initialY, initialHeight, initialWidth } =
+      initialValuesReference.current
+    const finalY = event.clientY
 
-    const isVertical = position.direction & (DIRECTION.north | DIRECTION.south)
-    const isHorizontal = position.direction & (DIRECTION.east | DIRECTION.west)
+    handleResize(
+      `${initialWidth}px`,
+      `${initialHeight - (finalY - initialY)}px`,
+    )
+  }
 
-    if (isVertical) {
-      const currentY = event.clientY
-      dY = currentY - position.initialY
-      dY = position.direction & DIRECTION.south ? dY : -dY
-      position.initialY = currentY
-    }
+  const handleSouthMove = (event: MouseEvent) => {
+    const { initialY, initialHeight, initialWidth } =
+      initialValuesReference.current
+    const finalY = event.clientY
 
-    if (isHorizontal) {
-      const currentX = event.clientX
-      dX = currentX - position.initialX
-      dX = position.direction & DIRECTION.east ? dX : -dX
-      position.initialX = currentX
+    handleResize(`${initialWidth}px`, `${initialHeight + finalY - initialY}px`)
+  }
 
-      // dY = isVertical ? dX / aspectRatio : dY
-    }
+  const handleEastMove = (event: MouseEvent) => {
+    const { initialX, initialHeight, initialWidth } =
+      initialValuesReference.current
+    const finalX = event.clientX
 
-    const newHeight = imageHeight + dY
-    const newWidth = imageWidth + dX
+    handleResize(`${initialWidth + finalX - initialX}px`, `${initialHeight}px`)
+  }
 
-    handleResize(`${newWidth}px`, `${newHeight}px`)
+  const handleWestMove = (event: MouseEvent) => {
+    const { initialX, initialHeight, initialWidth } =
+      initialValuesReference.current
+    const finalX = event.clientX
+
+    handleResize(
+      `${initialWidth - (finalX - initialX)}px`,
+      `${initialHeight}px`,
+    )
+  }
+
+  const directionToHandler = {
+    0: handleNorthMove,
+    1: handleSouthMove,
+    2: handleEastMove,
+    3: handleWestMove,
   }
 
   const onMouseUp = () => {
-    const position = positionReference.current
-    // use ts-belt tap?
-    Object.keys(position).forEach((property) => {
-      position[property as keyof typeof position] = 0
-    })
+    if (!moveHandlerReference.current.handler) return
 
-    document.removeEventListener("mousemove", onMouseMove)
-    document.removeEventListener("mouseup", onMouseUp)
+    document.removeEventListener(
+      "mousemove",
+      moveHandlerReference.current.handler,
+    )
   }
 
   const onMouseDown = (
     event: React.MouseEvent<HTMLDivElement>,
     direction: DIRECTION,
   ) => {
-    const position = positionReference.current
-    position.initialY = event.clientY
-    position.initialX = event.clientX
-    position.direction = direction
+    if (!imageContainer) return
+    const initialValues = initialValuesReference.current
+    const { width: initialWidth, height: initialHeight } =
+      imageContainer.getBoundingClientRect()
 
-    document.addEventListener("mousemove", onMouseMove)
-    document.addEventListener("mouseup", onMouseUp)
+    initialValues.initialY = event.clientY
+    initialValues.initialX = event.clientX
+    initialValues.initialWidth = initialWidth
+    initialValues.initialHeight = initialHeight
+
+    moveHandlerReference.current.handler = directionToHandler[direction]
+
+    document.addEventListener("mousemove", directionToHandler[direction])
+    document.addEventListener("mouseup", onMouseUp, { once: true })
   }
 
   return (
     <>
       <div
         className={`${root} ${north}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.north)}
+        onMouseDown={(event) => onMouseDown(event, DIRECTION.NORTH)}
       />
       <div
         className={`${root} ${south}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.south)}
+        onMouseDown={(event) => onMouseDown(event, DIRECTION.SOUTH)}
       />
       <div
         className={`${root} ${east}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.east)}
+        onMouseDown={(event) => onMouseDown(event, DIRECTION.EAST)}
       />
       <div
         className={`${root} ${west}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.west)}
-      />
-      <div
-        className={`${root} ${ne}`}
-        onMouseDown={(event) =>
-          onMouseDown(event, DIRECTION.north | DIRECTION.east)
-        }
-      />
-      <div
-        className={`${root} ${nw}`}
-        onMouseDown={(event) =>
-          onMouseDown(event, DIRECTION.north | DIRECTION.west)
-        }
-      />
-      <div
-        className={`${root} ${se}`}
-        onMouseDown={(event) =>
-          onMouseDown(event, DIRECTION.south | DIRECTION.east)
-        }
-      />
-      <div
-        className={`${root} ${sw}`}
-        onMouseDown={(event) =>
-          onMouseDown(event, DIRECTION.south | DIRECTION.west)
-        }
+        onMouseDown={(event) => onMouseDown(event, DIRECTION.WEST)}
       />
     </>
   )
