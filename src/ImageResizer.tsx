@@ -26,7 +26,7 @@ const ImageResizer = ({
     initialWidth: 0,
     initialHeight: 0,
   })
-  const { root, north, south, east, west } = useResizerStyles()
+  const classes = useResizerStyles()
 
   const handleNorthMove = (event: MouseEvent) => {
     const { initialY, initialHeight, initialWidth } =
@@ -85,6 +85,7 @@ const ImageResizer = ({
     event: React.MouseEvent<HTMLDivElement>,
     direction: DIRECTION,
   ) => {
+    event.preventDefault()
     if (!imageContainer) return
     const initialValues = initialValuesReference.current
     const { width: initialWidth, height: initialHeight } =
@@ -103,22 +104,14 @@ const ImageResizer = ({
 
   return (
     <>
-      <div
-        className={`${root} ${north}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.NORTH)}
-      />
-      <div
-        className={`${root} ${south}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.SOUTH)}
-      />
-      <div
-        className={`${root} ${east}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.EAST)}
-      />
-      <div
-        className={`${root} ${west}`}
-        onMouseDown={(event) => onMouseDown(event, DIRECTION.WEST)}
-      />
+      {(Object.keys(DIRECTION) as Array<keyof typeof DIRECTION>).map(
+        (direction) => (
+          <div
+            className={`${classes.root} ${classes[DIRECTION[direction]]}`}
+            onMouseDown={(event) => onMouseDown(event, DIRECTION[direction])}
+          />
+        ),
+      )}
     </>
   )
 }
