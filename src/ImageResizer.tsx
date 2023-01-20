@@ -2,10 +2,10 @@ import React, { useRef } from "react"
 import useResizerStyles from "./resizerStyles"
 
 enum DIRECTION {
-  NORTH,
-  SOUTH,
-  EAST,
-  WEST,
+  NORTH = "north",
+  SOUTH = "south",
+  EAST = "east",
+  WEST = "west",
 }
 
 type ImageResizerProperties = {
@@ -67,15 +67,14 @@ const ImageResizer = ({
   }
 
   const directionToHandler = {
-    0: handleNorthMove,
-    1: handleSouthMove,
-    2: handleEastMove,
-    3: handleWestMove,
+    north: handleNorthMove,
+    south: handleSouthMove,
+    east: handleEastMove,
+    west: handleWestMove,
   }
 
   const onMouseUp = () => {
     if (!moveHandlerReference.current.handler) return
-
     document.removeEventListener(
       "mousemove",
       moveHandlerReference.current.handler,

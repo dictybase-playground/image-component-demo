@@ -20,11 +20,7 @@ const ImageComponent = ({
   duration,
 }: ImageComponentProperties) => {
   const onResize = (width: string, height: string) => {
-    console.table({
-      log: "Change Lexical Image Node Properties Here",
-      width,
-      height,
-    })
+    //  Change Lexical Image Node Properties Here"
   }
 
   return (
