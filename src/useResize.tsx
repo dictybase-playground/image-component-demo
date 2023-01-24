@@ -66,53 +66,12 @@ const useResize = (
     initialHeight: 0,
   })
 
-<<<<<<< HEAD
-  const handleNorthMove = (event: MouseEvent) => {
-    const { initialY, initialHeight, initialWidth } =
-      initialValuesReference.current
-    const finalY = event.clientY
-
-    handleResize(initialWidth, initialHeight - (finalY - initialY))
-  }
-
-  const handleSouthMove = (event: MouseEvent) => {
-    const { initialY, initialHeight, initialWidth } =
-      initialValuesReference.current
-    const finalY = event.clientY
-
-    handleResize(initialWidth, initialHeight + finalY - initialY)
-  }
-
-  const handleEastMove = (event: MouseEvent) => {
-    const { initialX, initialHeight, initialWidth } =
-      initialValuesReference.current
-    const finalX = event.clientX
-
-    handleResize(initialWidth + finalX - initialX, initialHeight)
-  }
-
-  const handleWestMove = (event: MouseEvent) => {
-    const { initialX, initialHeight, initialWidth } =
-      initialValuesReference.current
-    const finalX = event.clientX
-
-    handleResize(initialWidth - (finalX - initialX), initialHeight)
-  }
-
-  const directionToHandler = {
-    north: handleNorthMove,
-    south: handleSouthMove,
-    east: handleEastMove,
-    west: handleWestMove,
-  }
-=======
   const directionToHandler = new Map<Direction, MouseMoveHandlerCreator>([
     ["north", createNorthMoveHandler],
     ["south", createSouthMoveHandler],
     ["east", createEastMoveHandler],
     ["west", createWestMoveHandler],
   ])
->>>>>>> 68a3ec6 (refactor: move mouse handlers outside of hook scope)
 
   const onMouseUp = () => {
     if (!moveHandlerReference.current.handler) return
