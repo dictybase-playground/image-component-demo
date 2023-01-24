@@ -5,7 +5,7 @@ const directions: Direction[] = ["north", "south", "east", "west"]
 
 type ImageResizerProperties = {
   imageContainer: HTMLDivElement
-  handleResize: (width: string, height: string) => void
+  handleResize: (width: number, height: number) => void
 }
 
 /**
