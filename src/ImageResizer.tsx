@@ -8,6 +8,12 @@ type ImageResizerProperties = {
   handleResize: (width: string, height: string) => void
 }
 
+/**
+ * Renders draggable handles that can be used to resize their parent element.
+ *
+ * @param handleResize a callback function used to set the new dimensions of the parent element.
+ * @param imageContainer a reference to the parent container
+ */
 const ImageResizer = ({
   handleResize,
   imageContainer,

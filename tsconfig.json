@@ -16,6 +16,10 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "typedocOptions": {
+    "entryPoints": ["./src/*.ts", "./src/*.tsx"],
+    "out": "doc"
+  },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
