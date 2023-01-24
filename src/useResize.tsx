@@ -1,14 +1,63 @@
 import React, { useRef } from "react"
-// Why use different mouse event types ?
 
 export type Direction = "north" | "south" | "east" | "west"
 
+type MouseMoveHandlerCreator = (
+  initialValues: {
+    initialX: number
+    initialY: number
+    initialWidth: number
+    initialHeight: number
+  },
+  handleResize: (width: number, height: number) => void,
+) => (event: MouseEvent) => void
+
+const createNorthMoveHandler: MouseMoveHandlerCreator =
+  (initialValues, handleResize) => (event) => {
+    const { initialY, initialHeight, initialWidth } = initialValues
+    const finalY = event.clientY
+
+    handleResize(initialWidth, initialHeight - (finalY - initialY))
+  }
+
+const createSouthMoveHandler: MouseMoveHandlerCreator =
+  (initialValues, handleResize) => (event) => {
+    const { initialY, initialHeight, initialWidth } = initialValues
+    const finalY = event.clientY
+
+    handleResize(initialWidth, initialHeight + finalY - initialY)
+  }
+
+const createEastMoveHandler: MouseMoveHandlerCreator =
+  (initialValues, handleResize) => (event) => {
+    const { initialX, initialHeight, initialWidth } = initialValues
+    const finalX = event.clientX
+
+    handleResize(initialWidth + finalX - initialX, initialHeight)
+  }
+
+const createWestMoveHandler: MouseMoveHandlerCreator =
+  (initialValues, handleResize) => (event) => {
+    const { initialX, initialHeight, initialWidth } = initialValues
+    const finalX = event.clientX
+
+    handleResize(initialWidth - (finalX - initialX), initialHeight)
+  }
+
+/**
+ * A React hook that returns a mousedown event handler used to resize elements
+ *
+ * @category Hooks
+ * @param handleResize a callback function used to set the new dimensions of the parent element.
+ * @param imageContainer a reference to the parent container
+ * @returns an event handler for mousedown events
+ */
 const useResize = (
   imageContainer: HTMLDivElement,
   handleResize: (width: number, height: number) => void,
 ) => {
   const moveHandlerReference = useRef<{
-    handler: null | ((event: MouseEvent) => void)
+    handler: ((event: MouseEvent) => void) | null | undefined
   }>({ handler: null })
   const initialValuesReference = useRef({
     initialX: 0,
@@ -17,6 +66,7 @@ const useResize = (
     initialHeight: 0,
   })
 
+<<<<<<< HEAD
   const handleNorthMove = (event: MouseEvent) => {
     const { initialY, initialHeight, initialWidth } =
       initialValuesReference.current
@@ -55,6 +105,14 @@ const useResize = (
     east: handleEastMove,
     west: handleWestMove,
   }
+=======
+  const directionToHandler = new Map<Direction, MouseMoveHandlerCreator>([
+    ["north", createNorthMoveHandler],
+    ["south", createSouthMoveHandler],
+    ["east", createEastMoveHandler],
+    ["west", createWestMoveHandler],
+  ])
+>>>>>>> 68a3ec6 (refactor: move mouse handlers outside of hook scope)
 
   const onMouseUp = () => {
     if (!moveHandlerReference.current.handler) return
@@ -77,9 +135,15 @@ const useResize = (
     initialValuesReference.current.initialWidth = initialWidth
     initialValuesReference.current.initialHeight = initialHeight
 
-    moveHandlerReference.current.handler = directionToHandler[direction]
+    const mouseMoveHandlerCreator = directionToHandler.get(direction)
+    if (!mouseMoveHandlerCreator) return
 
-    document.addEventListener("mousemove", directionToHandler[direction])
+    const mouseMoveHandler = mouseMoveHandlerCreator(
+      initialValuesReference.current,
+      handleResize,
+    )
+    moveHandlerReference.current.handler = mouseMoveHandler
+    document.addEventListener("mousemove", mouseMoveHandler)
     document.addEventListener("mouseup", onMouseUp, { once: true })
   }
 
