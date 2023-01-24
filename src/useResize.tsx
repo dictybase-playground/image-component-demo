@@ -5,7 +5,7 @@ export type Direction = "north" | "south" | "east" | "west"
 
 const useResize = (
   imageContainer: HTMLDivElement,
-  handleResize: (width: string, height: string) => void,
+  handleResize: (width: number, height: number) => void,
 ) => {
   const moveHandlerReference = useRef<{
     handler: null | ((event: MouseEvent) => void)
@@ -22,10 +22,7 @@ const useResize = (
       initialValuesReference.current
     const finalY = event.clientY
 
-    handleResize(
-      `${initialWidth}px`,
-      `${initialHeight - (finalY - initialY)}px`,
-    )
+    handleResize(initialWidth, initialHeight - (finalY - initialY))
   }
 
   const handleSouthMove = (event: MouseEvent) => {
@@ -33,7 +30,7 @@ const useResize = (
       initialValuesReference.current
     const finalY = event.clientY
 
-    handleResize(`${initialWidth}px`, `${initialHeight + finalY - initialY}px`)
+    handleResize(initialWidth, initialHeight + finalY - initialY)
   }
 
   const handleEastMove = (event: MouseEvent) => {
@@ -41,7 +38,7 @@ const useResize = (
       initialValuesReference.current
     const finalX = event.clientX
 
-    handleResize(`${initialWidth + finalX - initialX}px`, `${initialHeight}px`)
+    handleResize(initialWidth + finalX - initialX, initialHeight)
   }
 
   const handleWestMove = (event: MouseEvent) => {
@@ -49,10 +46,7 @@ const useResize = (
       initialValuesReference.current
     const finalX = event.clientX
 
-    handleResize(
-      `${initialWidth - (finalX - initialX)}px`,
-      `${initialHeight}px`,
-    )
+    handleResize(initialWidth - (finalX - initialX), initialHeight)
   }
 
   const directionToHandler = {
