@@ -8,19 +8,19 @@ import useImageStyles from "./imageStyles"
 type ImageProperties = {
   src: string
   alt?: string
-  initialWidth: string
-  initialHeight: string
+  initialWidth: number
+  initialHeight: number
   fit: string
   duration: number
   easing: string
-  onResize: (width: string, height: string) => void
+  onResize: (width: number, height: number) => void
 }
 
 const Image = ({
   src,
   alt,
-  initialHeight = "100%",
-  initialWidth = "100%",
+  initialHeight = 500,
+  initialWidth = 500,
   fit = "contain",
   easing = "cubic-bezier(0.7, 0, 0.6, 1)",
   duration = 2000,
@@ -34,8 +34,8 @@ const Image = ({
   const [error, setError] = useState(false)
   const imageContainerReference = useRef<HTMLImageElement>(null)
   const { root, image, icons } = useImageStyles({
-    width: dimensions.width,
-    height: dimensions.height,
+    width: `${dimensions.width}px`,
+    height: `${dimensions.height}px`,
     fit,
     easing,
     duration,
@@ -43,7 +43,7 @@ const Image = ({
     error,
   })
 
-  const handleResize = (newWidth: string, newHeight: string) => {
+  const handleResize = (newWidth: number, newHeight: number) => {
     setDimensions({ width: newWidth, height: newHeight })
     onResize(newWidth, newHeight)
   }

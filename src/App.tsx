@@ -14,8 +14,8 @@ import {
 import ImageComponent from "./ImageComponent"
 
 const DEFAULT_IMAGE = 1
-const HEIGHT = "100%"
-const WIDTH = "100%"
+const HEIGHT = 500
+const WIDTH = 500
 const DURATION = 2000
 const EASING = "cubic-bezier(0.7, 0, 0.6, 1)"
 const FIT = "cover"

@@ -3,8 +3,8 @@ import Image from "./Image"
 type ImageComponentProperties = {
   src: string
   alt?: string
-  initialHeight: string
-  initialWidth: string
+  initialHeight: number
+  initialWidth: number
   fit: string
   duration: number
   easing: string
@@ -19,8 +19,7 @@ const ImageComponent = ({
   easing,
   duration,
 }: ImageComponentProperties) => {
-  // change to string
-  const onResize = (width: string, height: string) => {
+  const onResize = (width: number, height: number) => {
     //  Change Lexical Image Node Properties Here"
   }
 
