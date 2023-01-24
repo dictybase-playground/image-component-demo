@@ -12,7 +12,7 @@ type MouseMoveHandlerCreator = (
   handleResize: (width: number, height: number) => void,
 ) => (event: MouseEvent) => void
 
-const createNorthMoveHandler: MouseMoveHandlerCreator =
+export const createNorthMoveHandler: MouseMoveHandlerCreator =
   (initialValues, handleResize) => (event) => {
     const { initialY, initialHeight, initialWidth } = initialValues
     const finalY = event.clientY
@@ -20,7 +20,7 @@ const createNorthMoveHandler: MouseMoveHandlerCreator =
     handleResize(initialWidth, initialHeight - (finalY - initialY))
   }
 
-const createSouthMoveHandler: MouseMoveHandlerCreator =
+export const createSouthMoveHandler: MouseMoveHandlerCreator =
   (initialValues, handleResize) => (event) => {
     const { initialY, initialHeight, initialWidth } = initialValues
     const finalY = event.clientY
@@ -28,7 +28,7 @@ const createSouthMoveHandler: MouseMoveHandlerCreator =
     handleResize(initialWidth, initialHeight + finalY - initialY)
   }
 
-const createEastMoveHandler: MouseMoveHandlerCreator =
+export const createEastMoveHandler: MouseMoveHandlerCreator =
   (initialValues, handleResize) => (event) => {
     const { initialX, initialHeight, initialWidth } = initialValues
     const finalX = event.clientX
@@ -36,7 +36,7 @@ const createEastMoveHandler: MouseMoveHandlerCreator =
     handleResize(initialWidth + finalX - initialX, initialHeight)
   }
 
-const createWestMoveHandler: MouseMoveHandlerCreator =
+export const createWestMoveHandler: MouseMoveHandlerCreator =
   (initialValues, handleResize) => (event) => {
     const { initialX, initialHeight, initialWidth } = initialValues
     const finalX = event.clientX
