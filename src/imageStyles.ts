@@ -1,8 +1,8 @@
 import { makeStyles, Theme } from "@material-ui/core"
 
 type StyleProperties = {
-  currentHeight: string
-  currentWidth: string
+  height: string
+  width: string
   fit: string
   duration: number
   easing: string
@@ -13,8 +13,8 @@ type StyleProperties = {
 const useImageStyles = makeStyles<Theme, StyleProperties>({
   root: {
     position: "relative",
-    height: ({ currentHeight }) => currentHeight,
-    width: ({ currentWidth }) => currentWidth,
+    height: ({ height: currentHeight }) => currentHeight,
+    width: ({ width: currentWidth }) => currentWidth,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

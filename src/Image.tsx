@@ -8,8 +8,8 @@ import useImageStyles from "./imageStyles"
 type ImageProperties = {
   src: string
   alt?: string
-  height: string
-  width: string
+  initialWidth: string
+  initialHeight: string
   fit: string
   duration: number
   easing: string
@@ -19,21 +19,23 @@ type ImageProperties = {
 const Image = ({
   src,
   alt,
-  height = "100%",
-  width = "100%",
+  initialHeight = "100%",
+  initialWidth = "100%",
   fit = "contain",
   easing = "cubic-bezier(0.7, 0, 0.6, 1)",
   duration = 2000,
   onResize,
 }: ImageProperties) => {
-  const [currentWidth, setCurrentWidth] = useState(width)
-  const [currentHeight, setCurrentHeight] = useState(height)
+  const [dimensions, setDimensions] = useState({
+    width: initialHeight,
+    height: initialWidth,
+  })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const imageContainerReference = useRef<HTMLImageElement>(null)
   const { root, image, icons } = useImageStyles({
-    currentWidth,
-    currentHeight,
+    width: dimensions.width,
+    height: dimensions.height,
     fit,
     easing,
     duration,
@@ -42,8 +44,7 @@ const Image = ({
   })
 
   const handleResize = (newWidth: string, newHeight: string) => {
-    setCurrentWidth(newWidth)
-    setCurrentHeight(newHeight)
+    setDimensions({ width: newWidth, height: newHeight })
     onResize(newWidth, newHeight)
   }
 
@@ -63,10 +64,12 @@ const Image = ({
       />
       {loading ? <LoadingDisplay icons={icons} /> : null}
       {error ? <ErrorDisplay icons={icons} /> : null}
-      <ImageResizer
-        handleResize={handleResize}
-        imageContainer={imageContainerReference.current}
-      />
+      {imageContainerReference.current ? (
+        <ImageResizer
+          handleResize={handleResize}
+          imageContainer={imageContainerReference.current}
+        />
+      ) : null}
     </Container>
   )
 }
