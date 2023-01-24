@@ -19,6 +19,7 @@ const ImageComponent = ({
   easing,
   duration,
 }: ImageComponentProperties) => {
+  // change to string
   const onResize = (width: string, height: string) => {
     //  Change Lexical Image Node Properties Here"
   }
@@ -27,8 +28,8 @@ const ImageComponent = ({
     <Image
       src={src}
       alt={alt}
-      height={initialHeight}
-      width={initialWidth}
+      initialHeight={initialHeight}
+      initialWidth={initialWidth}
       fit={fit}
       duration={duration}
       easing={easing}
