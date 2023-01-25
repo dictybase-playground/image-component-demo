@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@fontsource/fira-code": "^4.5.12",
+    "@testing-library/react": "^12",
     "@types/react": "17.0.52",
     "@types/react-dom": "17.0.18",
     "@vitejs/plugin-react": "^2.2.0",

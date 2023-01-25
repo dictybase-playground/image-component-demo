@@ -1,7 +1,16 @@
 import useResizerStyles from "./resizerStyles"
 import { Direction, useResize } from "./useResize"
 
-const directions: Direction[] = ["north", "south", "east", "west"]
+const directions: Direction[] = [
+  "north",
+  "south",
+  "east",
+  "west",
+  "ne",
+  "nw",
+  "se",
+  "sw",
+]
 
 export type ImageResizerProperties = {
   imageContainer: HTMLDivElement

@@ -1,6 +1,14 @@
 import React, { useRef } from "react"
 
-export type Direction = "north" | "south" | "east" | "west"
+export type Direction =
+  | "north"
+  | "south"
+  | "east"
+  | "west"
+  | "ne"
+  | "nw"
+  | "se"
+  | "sw"
 
 export type MouseMoveHandlerCreator = (
   initialValues: {
@@ -20,7 +28,8 @@ export const createNorthMoveHandler: MouseMoveHandlerCreator =
     const { initialY, initialHeight, initialWidth } = initialValues
     const finalY = event.clientY
 
-    handleResize(initialWidth, initialHeight - (finalY - initialY))
+    const newHeight = Math.floor(initialHeight - (finalY - initialY))
+    handleResize(initialWidth, newHeight)
   }
 
 export const createSouthMoveHandler: MouseMoveHandlerCreator =
@@ -28,7 +37,8 @@ export const createSouthMoveHandler: MouseMoveHandlerCreator =
     const { initialY, initialHeight, initialWidth } = initialValues
     const finalY = event.clientY
 
-    handleResize(initialWidth, initialHeight + finalY - initialY)
+    const newHeight = Math.floor(initialHeight + finalY - initialY)
+    handleResize(initialWidth, newHeight)
   }
 
 export const createEastMoveHandler: MouseMoveHandlerCreator =
@@ -36,7 +46,8 @@ export const createEastMoveHandler: MouseMoveHandlerCreator =
     const { initialX, initialHeight, initialWidth } = initialValues
     const finalX = event.clientX
 
-    handleResize(initialWidth + finalX - initialX, initialHeight)
+    const newWidth = initialWidth + finalX - initialX
+    handleResize(newWidth, initialHeight)
   }
 
 export const createWestMoveHandler: MouseMoveHandlerCreator =
@@ -44,7 +55,30 @@ export const createWestMoveHandler: MouseMoveHandlerCreator =
     const { initialX, initialHeight, initialWidth } = initialValues
     const finalX = event.clientX
 
-    handleResize(initialWidth - (finalX - initialX), initialHeight)
+    const newWidth = initialWidth - (finalX - initialX)
+    handleResize(newWidth, initialHeight)
+  }
+
+export const createDiagonalEastMoveHandler: MouseMoveHandlerCreator =
+  (initialValues, handleResize) => (event) => {
+    const { initialX, initialHeight, initialWidth } = initialValues
+    const aspectRatio = initialWidth / initialHeight
+    const finalX = event.clientX
+
+    const newWidth = Math.floor(initialWidth + finalX - initialX)
+    const newHeight = newWidth / aspectRatio
+    handleResize(newWidth, newHeight)
+  }
+
+export const createDiagonalWestMoveHandler: MouseMoveHandlerCreator =
+  (initialValues, handleResize) => (event) => {
+    const { initialX, initialHeight, initialWidth } = initialValues
+    const aspectRatio = initialWidth / initialHeight
+    const finalX = event.clientX
+
+    const newWidth = initialWidth - (finalX - initialX)
+    const newHeight = newWidth / aspectRatio
+    handleResize(newWidth, newHeight)
   }
 
 const directionToHandler = new Map<Direction, MouseMoveHandlerCreator>([
@@ -52,6 +86,10 @@ const directionToHandler = new Map<Direction, MouseMoveHandlerCreator>([
   ["south", createSouthMoveHandler],
   ["east", createEastMoveHandler],
   ["west", createWestMoveHandler],
+  ["ne", createDiagonalEastMoveHandler],
+  ["se", createDiagonalEastMoveHandler],
+  ["nw", createDiagonalWestMoveHandler],
+  ["sw", createDiagonalWestMoveHandler],
 ])
 /**
  * A React hook that returns a mousedown event handler used to resize elements
@@ -104,7 +142,6 @@ export const useResize = (
     initialValuesReference.current.initialX = event.clientX
     initialValuesReference.current.initialWidth = initialWidth
     initialValuesReference.current.initialHeight = initialHeight
-
     const mouseMoveHandlerCreator = directionToHandler.get(direction)
     if (!mouseMoveHandlerCreator) return
 

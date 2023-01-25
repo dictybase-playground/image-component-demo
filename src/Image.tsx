@@ -34,8 +34,8 @@ const Image = ({
   const [error, setError] = useState(false)
   const imageContainerReference = useRef<HTMLImageElement>(null)
   const { root, image, icons } = useImageStyles({
-    width: `${dimensions.width}px`,
-    height: `${dimensions.height}px`,
+    width: dimensions.width,
+    height: dimensions.height,
     fit,
     easing,
     duration,
