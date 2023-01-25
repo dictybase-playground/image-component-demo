@@ -2,7 +2,7 @@ import React, { useRef } from "react"
 
 export type Direction = "north" | "south" | "east" | "west"
 
-type MouseMoveHandlerCreator = (
+export type MouseMoveHandlerCreator = (
   initialValues: {
     initialX: number
     initialY: number
@@ -12,6 +12,9 @@ type MouseMoveHandlerCreator = (
   handleResize: (width: number, height: number) => void,
 ) => (event: MouseEvent) => void
 
+// Since the addEventListener method expects a listener function which accepts
+// only an event listener, these functions are curried to provide arguments
+// for the other parameters in advance.
 export const createNorthMoveHandler: MouseMoveHandlerCreator =
   (initialValues, handleResize) => (event) => {
     const { initialY, initialHeight, initialWidth } = initialValues
@@ -44,6 +47,12 @@ export const createWestMoveHandler: MouseMoveHandlerCreator =
     handleResize(initialWidth - (finalX - initialX), initialHeight)
   }
 
+const directionToHandler = new Map<Direction, MouseMoveHandlerCreator>([
+  ["north", createNorthMoveHandler],
+  ["south", createSouthMoveHandler],
+  ["east", createEastMoveHandler],
+  ["west", createWestMoveHandler],
+])
 /**
  * A React hook that returns a mousedown event handler used to resize elements
  *
@@ -52,10 +61,12 @@ export const createWestMoveHandler: MouseMoveHandlerCreator =
  * @param imageContainer a reference to the parent container
  * @returns an event handler for mousedown events
  */
-const useResize = (
+export const useResize = (
   imageContainer: HTMLDivElement,
   handleResize: (width: number, height: number) => void,
 ) => {
+  // moveHandlerReference is used to track which moveHandler is currently registered
+  // so it can be removed by onMouseUp.
   const moveHandlerReference = useRef<{
     handler: ((event: MouseEvent) => void) | null | undefined
   }>({ handler: null })
@@ -66,13 +77,6 @@ const useResize = (
     initialHeight: 0,
   })
 
-  const directionToHandler = new Map<Direction, MouseMoveHandlerCreator>([
-    ["north", createNorthMoveHandler],
-    ["south", createSouthMoveHandler],
-    ["east", createEastMoveHandler],
-    ["west", createWestMoveHandler],
-  ])
-
   const onMouseUp = () => {
     if (!moveHandlerReference.current.handler) return
     document.removeEventListener(
@@ -81,6 +85,13 @@ const useResize = (
     )
   }
 
+  /**
+   * Initializes values used for calculating new image dimensions during mousemove
+   * and adds the appropriate mousemove and mouseup event listeners
+   * @param event
+   * @param direction
+   * @returns
+   */
   const onMouseDown = (
     event: React.MouseEvent<HTMLDivElement>,
     direction: Direction,
@@ -110,5 +121,3 @@ const useResize = (
     onMouseDown,
   }
 }
-
-export default useResize

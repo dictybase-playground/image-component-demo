@@ -1,9 +1,9 @@
 import useResizerStyles from "./resizerStyles"
-import useResize, { Direction } from "./useResize"
+import { Direction, useResize } from "./useResize"
 
 const directions: Direction[] = ["north", "south", "east", "west"]
 
-type ImageResizerProperties = {
+export type ImageResizerProperties = {
   imageContainer: HTMLDivElement
   handleResize: (width: number, height: number) => void
 }

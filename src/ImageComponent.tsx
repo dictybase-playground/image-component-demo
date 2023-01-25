@@ -1,6 +1,6 @@
 import Image from "./Image"
 
-type ImageComponentProperties = {
+export type ImageComponentProperties = {
   src: string
   alt?: string
   initialHeight: number

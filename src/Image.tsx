@@ -5,7 +5,7 @@ import ErrorDisplay from "./ErrorDisplay"
 import ImageResizer from "./ImageResizer"
 import useImageStyles from "./imageStyles"
 
-type ImageProperties = {
+export type ImageProperties = {
   src: string
   alt?: string
   initialWidth: number

@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from "@material-ui/core"
 
-type StyleProperties = {
+export type StyleProperties = {
   height: string
   width: string
   fit: string
