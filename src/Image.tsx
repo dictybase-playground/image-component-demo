@@ -1,5 +1,6 @@
 import { useRef, useState } from "react"
 import { Container } from "@material-ui/core"
+import { onDragStart } from "./dragHandlers"
 import LoadingDisplay from "./LoadingDisplay"
 import ErrorDisplay from "./ErrorDisplay"
 import useImageStyles from "./imageStyles"
@@ -9,9 +10,9 @@ export type ImageProperties = {
   alt?: string
   initialWidth: number
   initialHeight: number
-  fit: string
-  duration: number
-  easing: string
+  fit?: string
+  duration?: number
+  easing?: string
 }
 
 const Image = ({
@@ -52,6 +53,7 @@ const Image = ({
       disableGutters
       className={root}>
       <img
+        onDragStart={onDragStart}
         src={src}
         alt={alt}
         className={image}
