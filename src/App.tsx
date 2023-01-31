@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react"
 import { Container, Typography } from "@material-ui/core"
+import { onDragStart, onDrop } from "./dragHandlers"
 import Image from "./Image"
-
 const handleDrag = (event: DragEvent) => {
   event.preventDefault()
 }
@@ -13,17 +13,19 @@ const App = () => {
     if (!containerElement) return
     containerElement.addEventListener("dragenter", handleDrag)
     containerElement.addEventListener("dragover", handleDrag)
+    containerElement.addEventListener("drop", onDrop)
 
     // eslint-disable-next-line consistent-return
     return () => {
       if (containerElement) {
         containerElement.removeEventListener("dragenter", handleDrag)
         containerElement.removeEventListener("dragover", handleDrag)
+        containerElement.removeEventListener("drop", onDrop)
       }
     }
   }, [])
   return (
-    <Container ref={containerReference}>
+    <Container title="Drop Area" ref={containerReference}>
       <Typography variant="h1"> Heading </Typography>
       <p>
         <Typography variant="body1">
@@ -39,6 +41,12 @@ const App = () => {
           Phasellus at pellentesque augue, sit amet venenatis est.
         </Typography>
       </p>
+      <Image
+        src="/src/assets/3.jpg"
+        initialWidth={250}
+        initialHeight={250}
+        onDragStart={onDragStart}
+      />
       <p>
         <Typography variant="body1">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus
@@ -53,7 +61,6 @@ const App = () => {
           Phasellus at pellentesque augue, sit amet venenatis est.
         </Typography>
       </p>
-      <Image src="/src/assets/3.jpg" initialWidth={250} initialHeight={250} />
       <p>
         <Typography variant="body1">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus

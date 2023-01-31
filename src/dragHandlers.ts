@@ -1,8 +1,9 @@
-import { DragEvent } from "react"
+import React from "react"
 
-export const onDragStart = (event: DragEvent<HTMLImageElement>) => {
+export const onDragStart = (event: React.DragEvent<HTMLImageElement>) => {
   const { dataTransfer } = event
   if (!dataTransfer) return
+  dataTransfer.dropEffect = "move"
 
   // 1: Get reference to the image container
   const { currentTarget: image } = event
@@ -16,6 +17,32 @@ export const onDragStart = (event: DragEvent<HTMLImageElement>) => {
   console.log(outerHTML)
 }
 
-console.log(onDragStart)
+export const onDrop = (event: DragEvent) => {
+  event.preventDefault()
+  console.log("ondrop")
+  console.log(window.getSelection())
+}
 
-export const onDrop = (event: DragEvent) => {}
+/*
+    [x] Define DragStart handler
+        [x] Represent relevant data as string 
+            [x] Capture  data in event.dataTransfer
+    [x] Attach DragStart handler 
+
+    [] Define onDrop handler
+        [] Get mouse position relative to DOM hierarchy
+            [] ???
+        [] Move Image element to new position in DOM  
+            [] Remove previous Image 
+                [] Get previous Image
+                [] removeChild()
+            [] Append copy of Image at new position
+    [x] Attach onDrop handler
+
+    [] Make App container a valid drop target, so drop event will fire.
+        [] Attach dragenter and dragover listeners
+    
+
+    
+
+*/

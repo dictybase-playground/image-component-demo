@@ -18,24 +18,17 @@ const ImageComponent = ({
   fit,
   easing,
   duration,
-}: ImageComponentProperties) => {
-  const onResize = (width: number, height: number) => {
-    //  Change Lexical Image Node Properties Here"
-  }
-
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      initialHeight={initialHeight}
-      initialWidth={initialWidth}
-      fit={fit}
-      duration={duration}
-      easing={easing}
-      onResize={onResize}
-    />
-  )
-}
+}: ImageComponentProperties) => (
+  <Image
+    src={src}
+    alt={alt}
+    initialHeight={initialHeight}
+    initialWidth={initialWidth}
+    fit={fit}
+    duration={duration}
+    easing={easing}
+  />
+)
 // Positioning Resizer elements
 // Controling when the Resizer elements appear on the Image
 // Controling Lexical Image Node properties

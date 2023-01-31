@@ -1,6 +1,5 @@
-import { useRef, useState } from "react"
+import { DragEvent, useRef, useState } from "react"
 import { Container } from "@material-ui/core"
-import { onDragStart } from "./dragHandlers"
 import LoadingDisplay from "./LoadingDisplay"
 import ErrorDisplay from "./ErrorDisplay"
 import useImageStyles from "./imageStyles"
@@ -13,6 +12,7 @@ export type ImageProperties = {
   fit?: string
   duration?: number
   easing?: string
+  onDragStart?: (event: DragEvent<HTMLImageElement>) => void
 }
 
 const Image = ({
@@ -23,6 +23,7 @@ const Image = ({
   fit = "contain",
   easing = "cubic-bezier(0.7, 0, 0.6, 1)",
   duration = 2000,
+  onDragStart,
 }: ImageProperties) => {
   const [dimensions] = useState({
     width: initialHeight,
