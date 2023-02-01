@@ -1,34 +1,21 @@
-import { DragEvent, ReactElement, SetStateAction, Dispatch } from "react"
+import { ReactElement } from "react"
 import { Container } from "@material-ui/core"
-import { onDragStart } from "./dragHandlers"
-import { ContainerState } from "./AppVersion1"
+import { useDroppable } from "@dnd-kit/core"
 import useDropContainerStyles from "./useDropContainerStyles"
-import Image from "./Image"
-
-const handleDropTarget = (event: DragEvent) => {
-  event.preventDefault()
-}
 
 type DropContainerProperties = {
   children: ReactElement | ReactElement[]
-  setContainerState: Dispatch<SetStateAction<ContainerState>>
+  dropId: string
 }
 
-const DropContainer = ({
-  children,
-  setContainerState,
-}: DropContainerProperties) => {
+const DropContainer = ({ children, dropId }: DropContainerProperties) => {
+  const { setNodeRef } = useDroppable({
+    id: dropId,
+  })
   const { root } = useDropContainerStyles()
 
-  const onDrop = (event: DragEvent) => {}
-
   return (
-    <Container
-      title="Drop Area"
-      className={root}
-      onDrop={onDrop}
-      onDragEnter={handleDropTarget}
-      onDragOver={handleDropTarget}>
+    <Container title="Drop Area" ref={setNodeRef} className={root}>
       {children}
     </Container>
   )

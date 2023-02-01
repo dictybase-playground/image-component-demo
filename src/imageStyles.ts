@@ -1,11 +1,6 @@
 import { makeStyles, Theme } from "@material-ui/core"
 
 export type StyleProperties = {
-  height: number
-  width: number
-  fit: string
-  duration: number
-  easing: string
   loading: boolean
   error: boolean
 }
@@ -13,8 +8,8 @@ export type StyleProperties = {
 const useImageStyles = makeStyles<Theme, StyleProperties>({
   root: {
     position: "relative",
-    height: ({ height: currentHeight }) => `${currentHeight}px`,
-    width: ({ width: currentWidth }) => `${currentWidth}px`,
+    height: "100%",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -24,10 +19,6 @@ const useImageStyles = makeStyles<Theme, StyleProperties>({
     aspectRatio: "1",
     width: "100%",
     height: "100%",
-    "object-fit": ({ fit }) => fit,
-    animationName: `$materialize`,
-    animationDuration: ({ duration }) => `${duration}ms`,
-    animationTimingFunction: ({ easing }) => easing,
     zIndex: ({ error }) => (error ? -1 : 1),
   },
   icons: {

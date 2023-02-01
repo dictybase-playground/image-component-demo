@@ -1,43 +1,25 @@
 import { DragEvent, useRef, useState } from "react"
+import { useDraggable } from "@dnd-kit/core"
 import { Container } from "@material-ui/core"
 import LoadingDisplay from "./LoadingDisplay"
 import ErrorDisplay from "./ErrorDisplay"
 import useImageStyles from "./imageStyles"
 
-export type ImageProperties = {
+export type DraggableImageProperties = {
   src: string
   alt?: string
-  initialWidth: number
-  initialHeight: number
-  fit?: string
-  duration?: number
-  easing?: string
   onDragStart?: (event: DragEvent<HTMLImageElement>) => void
 }
 
-const Image = ({
+const DraggableImage = ({
   src,
   alt,
-  initialHeight = 500,
-  initialWidth = 500,
-  fit = "contain",
-  easing = "cubic-bezier(0.7, 0, 0.6, 1)",
-  duration = 2000,
   onDragStart,
-}: ImageProperties) => {
-  const [dimensions] = useState({
-    width: initialHeight,
-    height: initialWidth,
-  })
+}: DraggableImageProperties) => {
+  const { setNodeRef, listeners } = useDraggable({ id: "draggableImage" })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const imageContainerReference = useRef<HTMLImageElement>(null)
   const { root, image, icons } = useImageStyles({
-    width: dimensions.width,
-    height: dimensions.height,
-    fit,
-    easing,
-    duration,
     loading,
     error,
   })
@@ -51,10 +33,12 @@ const Image = ({
     <Container
       title="draggable container"
       draggable
-      ref={imageContainerReference}
+      ref={setNodeRef}
       disableGutters
       onDragStart={onDragStart}
-      className={root}>
+      className={root}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...listeners}>
       <img
         draggable={false}
         src={src}
@@ -69,4 +53,4 @@ const Image = ({
   )
 }
 
-export default Image
+export default DraggableImage

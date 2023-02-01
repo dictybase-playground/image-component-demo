@@ -1,15 +1,13 @@
 import { describe, test, expect, vi, afterEach } from "vitest"
 import { fireEvent, render, screen, cleanup } from "@testing-library/react"
-import Image from "./Image"
+import DraggableImage from "./DraggableImage"
 import { onDragStart } from "./dragHandlers"
 
 describe("Draggable Image", () => {
   afterEach(cleanup)
 
   test("renders a draggable element", async () => {
-    render(
-      <Image src="/src/assets/3.jpg" initialWidth={250} initialHeight={250} />,
-    )
+    render(<DraggableImage src="/src/assets/3.jpg" />)
     const draggableElement = await screen.findByTitle("draggable container")
     expect(draggableElement).toBeDefined()
     expect(draggableElement).toHaveProperty("draggable")
@@ -18,11 +16,9 @@ describe("Draggable Image", () => {
   test("invokes onDragStart when the component is dragged", async () => {
     const spiedDragStartHandler = vi.fn(onDragStart)
     render(
-      <Image
+      <DraggableImage
         src="/src/assets/3.jpg"
         onDragStart={spiedDragStartHandler}
-        initialWidth={250}
-        initialHeight={250}
       />,
     )
 

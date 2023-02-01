@@ -2,11 +2,7 @@ import { useRef, useEffect } from "react"
 import { Container, Typography } from "@material-ui/core"
 import DropContainer from "./DropContainer"
 import { onDragStart, onDrop } from "./dragHandlers"
-import Image from "./Image"
-
-const handleDrag = (event: DragEvent) => {
-  event.preventDefault()
-}
+import DraggableImage from "./DraggableImage"
 
 const App = () => (
   <DropContainer>
@@ -24,7 +20,7 @@ const App = () => (
       sit amet venenatis est.
     </Typography>
     <br />
-    <Image
+    <DraggableImage
       src="/src/assets/3.jpg"
       initialWidth={250}
       initialHeight={250}
