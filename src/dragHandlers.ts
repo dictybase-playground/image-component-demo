@@ -1,15 +1,13 @@
-import React from "react"
+import { DragEvent } from "react"
 
-export const onDragStart = (
-  event: React.DragEvent<HTMLElement> | DragEvent,
-) => {
+export const onDragStart = (event: DragEvent) => {
   const { dataTransfer } = event
   if (!dataTransfer) return
   dataTransfer.effectAllowed = "move"
 
   // 1: Get reference to the image container
   const { currentTarget } = event
-  console.log("event.target.outerHTML", event.target.outerHTML)
+
   // 2: Get outerHTML string
   if (!currentTarget) return
   const { outerHTML } = currentTarget
@@ -17,19 +15,7 @@ export const onDragStart = (
   dataTransfer.setData("text/html", outerHTML)
 }
 
-export const onDrop = (event: DragEvent) => {
-  const { dataTransfer, target } = event
-  if (!dataTransfer) return
-  if (!target) return
-  event.preventDefault()
-
-  const draggedElementCopy = document.createElement("div")
-  target.after(draggedElementCopy)
-  draggedElementCopy.outerHTML = dataTransfer.getData("text/html")
-  draggedElementCopy.addEventListener("dragStart", onDragStart)
-  console.log(dataTransfer.getData("text/html"))
-  console.log(draggedElementCopy.outerHTML)
-}
+export const onDrop = (event: DragEvent) => {}
 
 /*
     [x] Define DragStart handler

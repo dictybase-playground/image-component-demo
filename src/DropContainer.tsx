@@ -1,33 +1,26 @@
-import { useRef, useEffect, DragEvent } from "react"
+import { DragEvent, ReactElement } from "react"
 import { Container } from "@material-ui/core"
-import { onDragStart, onDrop } from "./dragHandlers"
+import { onDragStart } from "./dragHandlers"
 import Image from "./Image"
 
-const handleDrag = (event: DragEvent) => {
+const handleDropTarget = (event: DragEvent) => {
   event.preventDefault()
 }
 
-const DropContainer = () => {
-  const containerReference = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const containerElement = containerReference.current
-    if (!containerElement) return
-    containerElement.addEventListener("dragenter", handleDrag)
-    containerElement.addEventListener("dragover", handleDrag)
-    containerElement.addEventListener("drop", onDrop)
+type DropContainerProperties = {
+  children: ReactElement | ReactElement[]
+}
 
-    // eslint-disable-next-line consistent-return
-    return () => {
-      if (containerElement) {
-        containerElement.removeEventListener("dragenter", handleDrag)
-        containerElement.removeEventListener("dragover", handleDrag)
-        containerElement.removeEventListener("drop", onDrop)
-      }
-    }
-  }, [])
+const DropContainer = ({ children }: DropContainerProperties) => {
+  const onDrop = (event: DragEvent) => {}
+
   return (
-    <Container onDrop={onDrop} title="Drop Area" ref={containerReference}>
-      test
+    <Container
+      title="Drop Area"
+      onDrop={onDrop}
+      onDragEnter={handleDropTarget}
+      onDragOver={handleDropTarget}>
+      {children}
     </Container>
   )
 }
