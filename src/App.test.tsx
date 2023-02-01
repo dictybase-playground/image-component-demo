@@ -5,9 +5,9 @@ import App from "./App"
 describe("App", () => {
   afterEach(cleanup)
 
-  it("renders a div as container element", () => {
+  it("renders a valid drop target", () => {
     render(<App />)
-    const container = screen.getByRole("generic")
+    const container = screen.getByTitle("Drop Area")
     expect(container).toBeDefined()
   })
 })

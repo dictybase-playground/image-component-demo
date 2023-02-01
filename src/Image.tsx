@@ -49,12 +49,14 @@ const Image = ({
 
   return (
     <Container
+      title="draggable container"
       draggable
       ref={imageContainerReference}
       disableGutters
+      onDragStart={onDragStart}
       className={root}>
       <img
-        onDragStart={onDragStart}
+        draggable={false}
         src={src}
         alt={alt}
         className={image}
