@@ -1,11 +1,11 @@
-import { ReactElement } from "react"
+import { ReactChild } from "react"
 import { Container } from "@material-ui/core"
-import { useDroppable } from "@dnd-kit/core"
+import { useDroppable, UniqueIdentifier } from "@dnd-kit/core"
 import useDropContainerStyles from "./useDropContainerStyles"
 
 type DropContainerProperties = {
-  children: ReactElement | ReactElement[]
-  dropId: string
+  children: ReactChild[] | ReactChild
+  dropId: UniqueIdentifier
 }
 
 const DropContainer = ({ children, dropId }: DropContainerProperties) => {

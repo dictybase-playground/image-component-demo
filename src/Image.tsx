@@ -1,27 +1,20 @@
-import { DragEvent, useState } from "react"
-import { useDraggable } from "@dnd-kit/core"
+import { useState } from "react"
 import { Container } from "@material-ui/core"
 import LoadingDisplay from "./LoadingDisplay"
 import ErrorDisplay from "./ErrorDisplay"
 import useImageStyles from "./useImageStyles"
 
-export type DraggableImageProperties = {
+export type ImageProperties = {
   src: string
-  id: string
   alt?: string
-  onDragStart?: (event: DragEvent<HTMLImageElement>) => void
 }
 
-const DraggableImage = ({ src, alt, id }: DraggableImageProperties) => {
-  const { setNodeRef, listeners, transform } = useDraggable({
-    id,
-  })
+const Image = ({ src, alt }: ImageProperties) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const { root, image, icons } = useImageStyles({
     loading,
     error,
-    transform,
   })
 
   const handleError = () => {
@@ -30,14 +23,7 @@ const DraggableImage = ({ src, alt, id }: DraggableImageProperties) => {
   }
 
   return (
-    <Container
-      title="draggable container"
-      draggable
-      ref={setNodeRef}
-      disableGutters
-      className={root}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...listeners}>
+    <Container disableGutters className={root}>
       <img
         draggable={false}
         src={src}
@@ -52,4 +38,4 @@ const DraggableImage = ({ src, alt, id }: DraggableImageProperties) => {
   )
 }
 
-export default DraggableImage
+export default Image

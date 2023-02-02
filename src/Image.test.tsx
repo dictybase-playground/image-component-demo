@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, afterEach } from "vitest"
 import { fireEvent, render, screen, cleanup } from "@testing-library/react"
-import DraggableImage from "./DraggableImage"
+import DraggableImage from "./Image"
 import { onDragStart } from "./dragHandlers"
 
 describe("Draggable Image", () => {

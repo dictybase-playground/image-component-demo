@@ -5,7 +5,7 @@ const useDropContainerStyles = makeStyles({
     border: "1px solid black",
     padding: "2px",
     height: "100%",
-    width: "260px",
+    width: "150px",
   },
 })
 
