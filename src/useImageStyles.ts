@@ -1,8 +1,10 @@
 import { makeStyles, Theme } from "@material-ui/core"
+import { Transform } from "@dnd-kit/utilities"
 
 export type StyleProperties = {
   loading: boolean
   error: boolean
+  transform: Transform | null
 }
 
 const useImageStyles = makeStyles<Theme, StyleProperties>({
@@ -14,6 +16,10 @@ const useImageStyles = makeStyles<Theme, StyleProperties>({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "black",
+    transform: ({ transform }) => {
+      if (!transform) return ""
+      return `translate3d(${transform?.x}px, ${transform?.y}px, 0)`
+    },
   },
   image: {
     aspectRatio: "1",

@@ -30,7 +30,7 @@ const App = () => {
             <Grid key={dropId} item>
               <DropContainer dropId={dropId}>
                 {dropId === parentId ? (
-                  <DraggableImage src="src/assets/2.jpg" />
+                  <DraggableImage id="draggable-image" src="src/assets/2.jpg" />
                 ) : (
                   []
                 )}
